@@ -4,17 +4,16 @@
 
 - PHP >= 8.2
 - Composer
-- MySQL o PostgreSQL
-- Servidor web (Nginx o Apache)
-- Node.js y npm (opcional, solo si usas herramientas de frontend)
+- MySQL
+- Node.js (bun) y npm (opcional, Para desplegar el frontend)
 
 ## Pasos de Despliegue
 
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/usuario/todo-app.git
-cd todo-app
+git clone https://github.com/JulianLlanten8/appTodo.git
+cd appTodo/Backend
 ```
 
 ### 2. Instalar dependencias
@@ -60,11 +59,7 @@ php artisan migrate
 chmod -R 775 storage bootstrap/cache
 ```
 
-### 7. Configurar el servidor web
-
-Configura tu servidor web para apuntar al directorio `public/` del proyecto.
-
-### 8. Iniciar el servidor (opcional)
+### 7. Iniciar el servidor (opcional)
 
 ```bash
 php artisan serve
@@ -73,4 +68,3 @@ php artisan serve
 ## Notas
 
 - Esta aplicación es solo API, no incluye vistas.
-- Asegúrate de proteger tus endpoints con autenticación si es necesario.
