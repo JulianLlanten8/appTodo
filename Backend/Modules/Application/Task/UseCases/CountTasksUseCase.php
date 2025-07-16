@@ -10,6 +10,7 @@ class CountTasksUseCase
 
     /**
      * Execute the use case to count all tasks.
+     * Ejecuta el caso de uso para contar todas las tareas.
      */
     public function execute(): int
     {

@@ -14,6 +14,10 @@ class CreateTaskUseCase
 
     /**
      * Execute the use case to create a new task.
+     * Ejecuta el caso de uso para crear una nueva tarea.
+     * 
+     * @param array $data The data for the new task, including title, description, status, color, priority, and due date.
+     * @return Task Returns the created task entity.
      */
     public function execute(array $data): Task
     {
@@ -24,8 +28,7 @@ class CreateTaskUseCase
             try {
                 $dueDate = new DateTime($data['due_date']);
             } catch (Exception $e) {
-                // Manejo de error si lo deseas
-                $dueDate = null;
+                throw_unless($e instanceof \Exception,  new \InvalidArgumentException('Invalid due date format.'));
             }
         }
 
