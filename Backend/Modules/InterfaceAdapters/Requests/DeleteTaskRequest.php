@@ -21,9 +21,21 @@ class DeleteTaskRequest extends FormRequest
      */
     public function rules(): array
     {
+        // usa un merge para combinar las reglas de validación de la ruta y del cuerpo de la solicitud
         return [
-            'id' => 'required|integer|exists:tasks,id', // Validación para asegurarse de que el ID sea un entero y exista en la tabla tasks
+            'id' => 'required|integer|exists:tasks,id',
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        // Fusiona el parámetro 'id' de la ruta en los datos del request
+        $this->getInputSource()->add([
+            'id' => $this->route('id'), // Obtiene el parámetro de ruta 'id'
+        ]);
     }
 
     /**

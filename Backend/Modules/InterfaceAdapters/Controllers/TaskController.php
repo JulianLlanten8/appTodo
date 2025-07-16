@@ -3,7 +3,6 @@
 namespace Modules\InterfaceAdapters\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Modules\Application\Task\UseCases\CountTasksUseCase;
 use Modules\Application\Task\UseCases\CreateTaskUseCase;
 use Modules\Application\Task\UseCases\DeleteTaskUseCase;
@@ -11,6 +10,7 @@ use Modules\Application\Task\UseCases\FindTaskByIdUseCase;
 use Modules\Application\Task\UseCases\GetAllTasksUseCase;
 use Modules\Application\Task\UseCases\UpdateTaskUseCase;
 use Modules\InterfaceAdapters\Requests\DeleteTaskRequest;
+use Modules\InterfaceAdapters\Requests\StoreTaskRequest;
 use Modules\InterfaceAdapters\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
@@ -37,11 +37,11 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreTaskRequest $request): JsonResponse
     {
-        $task = $this->createTaskUseCase->execute($request->only('title', 'description', 'status', 'color', 'priority', 'due_date'));
+        $task = $this->createTaskUseCase->execute($request->validated());
 
-        return response()->json($task);
+        return response()->json($task, 201);
     }
 
     /**
