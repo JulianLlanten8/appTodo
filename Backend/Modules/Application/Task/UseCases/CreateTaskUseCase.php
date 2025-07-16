@@ -22,7 +22,7 @@ class CreateTaskUseCase
         $task = new Task(
             id: 0,
             title: $data['title'],
-            description: $data['description'],
+            description: $data['description'] ?? '',
             status: $data['status'] ?? 'pending',
             color: $data['color'] ?? null,
             priority: $data['priority'] ?? 1,
