@@ -147,12 +147,19 @@ const TaskList = () => {
     );
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "-";
+  const formatDate = (dateInput) => {
+    if (!dateInput) return "-";
+
     try {
-      return new Date(dateString).toLocaleDateString("es-ES");
-    } catch {
-      return dateString;
+      // Formatear la fecha al formato "dd/mm/yyyy" usando Intl.DateTimeFormat
+      return new Intl.DateTimeFormat("es-ES", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(new Date(dateInput.date));
+    } catch (error) {
+      console.error("Error formatting date:", error, dateInput);
+      return "-";
     }
   };
 
