@@ -18,12 +18,6 @@ COPY . .
 # Instala dependencias de Laravel
 RUN composer install --no-dev --optimize-autoloader
 
-# Genera la clave de la aplicación
-RUN php artisan key:generate
-
-# Ejecuta las migraciones
-RUN php artisan migrate
-
 # Permisos de Laravel
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
