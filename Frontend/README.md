@@ -1,6 +1,7 @@
 # 📝 Todo App - Frontend
 
 Una aplicación moderna de tareas construida con **React 19** y **Vite 7** con **Tailwind CSS v4** para un desarrollo rápido y una interfaz elegante.
+![alt text](docs/Todo-app-arquitectura-hexagonal.webp)
 
 ## 🚀 Tecnologías
 
