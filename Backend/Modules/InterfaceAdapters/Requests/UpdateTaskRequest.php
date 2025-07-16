@@ -1,0 +1,47 @@
+<?php
+
+namespace Modules\InterfaceAdapters\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateTaskRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'title' => 'sometimes|required|string|max:255', // 'sometimes' para que sea opcional, pero si se envía, 'required'
+            'description' => 'sometimes|nullable|string',
+            'status' => 'sometimes|required|string|in:pending,completed,in_progress', // Ejemplo de valores permitidos
+            'color' => 'sometimes|nullable|string',
+            'priority' => 'sometimes|required|integer|min:1|max:5',
+            'due_date' => 'sometimes|nullable|date_format:Y-m-d H:i:s', // Formato de fecha
+        ];
+    }
+
+    /**
+     * Get custom messages for validation errors.
+     * (Opcional, para mensajes de error personalizados)
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'El título de la tarea es obligatorio.',
+            'status.in' => 'El estado de la tarea debe ser "pending", "completed" o "in_progress".',
+            'priority.min' => 'La prioridad debe ser al menos 1.',
+            'due_date.date_format' => 'El formato de la fecha de vencimiento debe ser YYYY-MM-DD HH:MM:SS.',
+        ];
+    }
+}

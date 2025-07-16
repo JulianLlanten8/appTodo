@@ -65,6 +65,11 @@ chmod -R 775 storage bootstrap/cache
 php artisan serve
 ```
 
+### 8. Ejecutar Pint (opcional) - Este comando ejecuta Pint, que es un formateador de código para PHP, con el fin de que el código siga las convenciones de estilo de Laravel.
+```bash
+php artisan lint
+```
+
 ## Notas
 
 - Esta aplicación es solo API, no incluye vistas.
