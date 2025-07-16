@@ -17,6 +17,22 @@ class CreateTaskUseCase
      */
     public function execute(array $data): Task
     {
+
+        $dueDate = null;
+
+        if (!empty($data['due_date'])) {
+            try {
+                $dueDate = new DateTime($data['due_date']);
+            } catch (\Exception $e) {
+                throw_unless(
+                    false,
+                    \InvalidArgumentException::class,
+                    'Invalid date format for due_date.'
+                );
+                $dueDate = null;
+            }
+        }
+
         $task = new Task(
             id: 0,
             title: $data['title'],
@@ -24,7 +40,7 @@ class CreateTaskUseCase
             status: $data['status'] ?? 'pending',
             color: $data['color'] ?? null,
             priority: $data['priority'] ?? 1,
-            due_date: $data['due_date']
+            due_date: $dueDate ? $dueDate->format('Y-m-d H:i:s') : null,
         );
 
         return $this->taskRepository->create($task);
