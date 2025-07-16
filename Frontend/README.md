@@ -80,10 +80,17 @@ Frontend/
 ├── src/
 │   ├── assets/
 │   │   └── react.svg
-│   ├── App.jsx          # Componente principal
-│   ├── App.css          # Estilos del componente
-│   ├── index.css        # Estilos globales + Tailwind
+│   ├── App.jsx          # Componente principal 🏠
+│   ├── index.css        # Estilos globales + Tailwind 💫
 │   └── main.jsx         # Punto de entrada
+│   ├── components/     # Componentes reutilizables 🎲
+│   │   ├── TaskForm.jsx 
+│   │   ├── TaskList.jsx
+│   │   └── TaskItem.jsx
+│   │   └── index.jsx   # Exporta todos los componentes - Archivo de barril 🛢️
+│   ├── services/          # Servicios y lógica de negocio 🔧
+│   │   └── api
+│       └── taskService.js  # Servicio para manejar tareas 🐕‍🦺
 ├── index.html           # Template HTML
 ├── package.json         # Dependencias y scripts
 ├── vite.config.js       # Configuración de Vite
