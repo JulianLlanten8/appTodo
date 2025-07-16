@@ -300,34 +300,58 @@ const TaskList = () => {
                       title={`Color: ${task.color || "#3B82F6"}`}
                     />
                   </td>
+
                   <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
                     {task.title || "Sin título"}
                   </th>
+
                   <td className="px-6 py-4 max-w-xs truncate">
                     <span title={task.description}>
                       {task.description || "Sin descripción"}
                     </span>
                   </td>
+
                   <td className="px-6 py-4">{formatDate(task.due_date)}</td>
                   <td className="px-6 py-4">{getStatusBadge(task.status)}</td>
                   <td className="px-6 py-4">
                     {getPriorityBadge(task.priority)}
                   </td>
+
                   <td className="px-6 py-4">
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-3">
                       <button
                         onClick={() => handleEditTask(task)}
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        className="inline-flex items-center px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 transition-colors duration-200 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       >
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                        </svg>
                         Editar
                       </button>
                       <button
                         onClick={() => handleDeleteClick(task.id)}
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline"
+                        className="inline-flex items-center px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 transition-colors duration-200 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                       >
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
                         Eliminar
                       </button>
                     </div>
