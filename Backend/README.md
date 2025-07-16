@@ -70,7 +70,7 @@ php artisan serve
 php artisan lint
 ```
 
-## Notas
 
-- Esta aplicación es solo API, no incluye vistas ya que se creo el frontend con React.
-- Adjunto encontrara una collection de Postman para probar los endpoints de la API Dentro de la carpeta `Docs`, la cual contiene ejemplos de peticiones y respuestas y podra importarla directamente en Postman o cualquier herramienta similar.
+> [!IMPORTANT]
+> - Esta aplicación es solo API, no incluye vistas ya que se creo el frontend con React.
+> - Adjunto encontrara una collection de Postman para probar los endpoints de la API Dentro de la carpeta `Docs`, la cual contiene ejemplos de peticiones y respuestas y podra importarla directamente en Postman o cualquier herramienta similar.
