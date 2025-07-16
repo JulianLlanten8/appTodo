@@ -50,7 +50,7 @@ php artisan key:generate
 ### 5. Migrar la base de datos
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ### 6. Configurar permisos
