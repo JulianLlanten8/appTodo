@@ -2,9 +2,9 @@
 
 namespace Modules\Application\Task\UseCases;
 
+use DateTime;
 use Modules\Domain\Task\Entities\Task;
 use Modules\Domain\Task\Repositories\TaskRepositoryInterface;
-use DateTime;
 
 class UpdateTaskUseCase
 {
@@ -12,6 +12,11 @@ class UpdateTaskUseCase
 
     /**
      * Execute the use case to update an existing task.
+     * Ejecuta el caso de uso para actualizar una tarea existente.
+     *
+     * @param  int  $id  The ID of the task to update.
+     * @param  array  $data  The data to update the task with, including title, description,status, color, priority, and due date.
+     * @return Task Returns the updated task entity.
      */
     public function execute(int $id, array $data): Task
     {

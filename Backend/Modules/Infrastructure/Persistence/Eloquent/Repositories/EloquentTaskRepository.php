@@ -10,7 +10,19 @@ class EloquentTaskRepository implements TaskRepositoryInterface
 {
     public function getAll(): array
     {
-        return TaskModel::all()->toArray();
+        $models = TaskModel::all();
+
+        return $models->map(function ($model) {
+            return new Task(
+                id: $model->id,
+                title: $model->title,
+                description: $model->description,
+                status: $model->status,
+                color: $model->color,
+                priority: $model->priority,
+                due_date: $model->due_date ? new \DateTime($model->due_date) : null
+            );
+        })->toArray();
     }
 
     public function create(Task $task): Task
@@ -18,9 +30,21 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         $model = TaskModel::create([
             'title' => $task->title,
             'description' => $task->description,
+            'status' => $task->status,
+            'color' => $task->color,
+            'priority' => $task->priority,
+            'due_date' => $task->due_date?->format('Y-m-d H:i:s'),
         ]);
 
-        return new Task($model->id, $model->title, $model->description);
+        return new Task(
+            id: $model->id,
+            title: $model->title,
+            description: $model->description,
+            status: $model->status,
+            color: $model->color,
+            priority: $model->priority,
+            due_date: $model->due_date ? new \DateTime($model->due_date) : null
+        );
     }
 
     public function findById(int $id): ?Task
@@ -30,7 +54,15 @@ class EloquentTaskRepository implements TaskRepositoryInterface
             return null;
         }
 
-        return new Task($model->id, $model->title, $model->description);
+        return new Task(
+            id: $model->id,
+            title: $model->title,
+            description: $model->description,
+            status: $model->status,
+            color: $model->color,
+            priority: $model->priority,
+            due_date: $model->due_date ? new \DateTime($model->due_date) : null
+        );
     }
 
     /**

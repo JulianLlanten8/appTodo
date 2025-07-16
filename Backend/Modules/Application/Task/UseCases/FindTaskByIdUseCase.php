@@ -12,8 +12,8 @@ class FindTaskByIdUseCase
     /**
      * Execute the use case to find a task by its ID.
      * Ejecuta el caso de uso para encontrar una tarea por su ID.
-     * 
-     * @param int $id The ID of the task to find.
+     *
+     * @param  int  $id  The ID of the task to find.
      * @return Task|null Returns the found task entity or null if not found.
      */
     public function execute(int $id): ?Task
