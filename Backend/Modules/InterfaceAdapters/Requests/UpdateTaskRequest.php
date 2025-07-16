@@ -28,7 +28,7 @@ class UpdateTaskRequest extends FormRequest
             'status' => 'sometimes|required|string|in:pending,completed,in_progress', // Ejemplo de valores permitidos
             'color' => 'sometimes|nullable|string',
             'priority' => 'sometimes|required|integer|min:1|max:5',
-            'due_date' => 'sometimes|nullable|date_format:Y-m-d H:i:s', // Formato de fecha
+            'due_date' => 'sometimes|nullable|date', // Acepta cualquier formato de fecha válido
         ];
     }
 
@@ -69,7 +69,7 @@ class UpdateTaskRequest extends FormRequest
             'title.required' => 'El título de la tarea es obligatorio.',
             'status.in' => 'El estado de la tarea debe ser "pending", "completed" o "in_progress".',
             'priority.min' => 'La prioridad debe ser al menos 1.',
-            'due_date.date_format' => 'El formato de la fecha de vencimiento debe ser YYYY-MM-DD HH:MM:SS.',
+            'due_date.date' => 'La fecha de vencimiento debe ser una fecha válida.',
         ];
     }
 }
