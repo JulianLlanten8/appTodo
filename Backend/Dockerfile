@@ -26,5 +26,14 @@ RUN chown -R www-data:www-data /var/www \
 EXPOSE 8000
 
 # Comando de inicio
-CMD ["/bin/sh", "-c", "echo 'APP_KEY=' > .env && php artisan key:generate && php artisan config:cache && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["/bin/sh", "-c", "\
+touch .env && \
+echo 'APP_KEY=' >> .env && \
+php artisan key:generate && \
+php artisan config:cache && \
+until php artisan migrate --force; do \
+  echo 'Esperando a que la base de datos esté lista...'; \
+  sleep 5; \
+done && \
+php artisan serve --host=0.0.0.0 --port=8000"]
 
