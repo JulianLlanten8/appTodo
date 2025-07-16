@@ -4,6 +4,7 @@ namespace Modules\Application\Task\UseCases;
 
 use Modules\Domain\Task\Entities\Task;
 use Modules\Domain\Task\Repositories\TaskRepositoryInterface;
+use DateTime;
 
 class CreateTaskUseCase
 {
@@ -16,6 +17,8 @@ class CreateTaskUseCase
      */
     public function execute(array $data): Task
     {
+
+
         $task = new Task(
             id: 0,
             title: $data['title'],
@@ -23,7 +26,7 @@ class CreateTaskUseCase
             status: $data['status'] ?? 'pending',
             color: $data['color'] ?? null,
             priority: $data['priority'] ?? 1,
-            due_date: $data['due_date'] ?? null
+            due_date: new DateTime($data['due_date'] ?? 'now')
         );
 
         return $this->taskRepository->create($task);

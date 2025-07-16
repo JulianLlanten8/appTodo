@@ -18,4 +18,11 @@ class TaskModel extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected $casts = [
+        'due_date' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+    
 }
