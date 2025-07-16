@@ -1,6 +1,6 @@
 FROM php:8.3-fpm
 
-# Instala dependencias de sistema
+# Instala dependencias de sistema y extensiones de PHP
 RUN apt-get update && apt-get install -y \
     git unzip curl libpng-dev libonig-dev libxml2-dev zip \
     libzip-dev libpq-dev libjpeg-dev libfreetype6-dev libjpeg62-turbo-dev \
@@ -17,6 +17,12 @@ COPY . .
 
 # Instala dependencias de Laravel
 RUN composer install --no-dev --optimize-autoloader
+
+# Genera la clave de la aplicación
+RUN php artisan key:generate
+
+# Ejecuta las migraciones
+RUN php artisan migrate
 
 # Permisos de Laravel
 RUN chown -R www-data:www-data /var/www \
