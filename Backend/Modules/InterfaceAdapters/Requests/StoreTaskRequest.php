@@ -32,19 +32,17 @@ class StoreTaskRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
+     * Get the validated data with default values applied.
      */
-    protected function prepareForValidation(): void
+    public function getValidatedDataWithDefaults(): array
     {
-        // Merge the request data with the input source
-        $this->merge([
-            'title' => $this->input('title'),
-            'description' => $this->input('description'),
-            'due_date' => $this->input('due_date'),
-            'status' => $this->input('status', 'pending'),
-            'color' => $this->input('color'),
-            'priority' => $this->input('priority', 1),
-        ]);
+        $validated = $this->validated();
+
+        // Aplicar valores por defecto si no están presentes
+        $validated['status'] = $validated['status'] ?? 'pending';
+        $validated['priority'] = $validated['priority'] ?? 1;
+
+        return $validated;
     }
 
     /**
