@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const TaskForm = ({ task = null, onSave, onCancel, mode = "create" }) => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const TaskForm = ({ task = null, onSave, onCancel, mode = "create" }) => {
       setFormData({
         title: task.title || "",
         description: task.description || "",
-        due_date: task.due_date ? task.due_date.split("T")[0] : "",
+        due_date: task.due_date ? task.due_date.slice(0, 10) : "",
         status: task.status || "pending",
         color: task.color || "#3B82F6",
         priority: task.priority || 3,
@@ -51,10 +51,6 @@ const TaskForm = ({ task = null, onSave, onCancel, mode = "create" }) => {
 
     if (!formData.description.trim()) {
       newErrors.description = "La descripción es requerida";
-    }
-
-    if (!formData.due_date) {
-      newErrors.due_date = "La fecha de vencimiento es requerida";
     }
 
     setErrors(newErrors);

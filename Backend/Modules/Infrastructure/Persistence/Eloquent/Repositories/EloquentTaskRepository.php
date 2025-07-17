@@ -20,7 +20,7 @@ class EloquentTaskRepository implements TaskRepositoryInterface
                 status: $model->status,
                 color: $model->color,
                 priority: $model->priority,
-                due_date: $model->due_date ? new \DateTime($model->due_date) : null
+                due_date: $model->due_date
             );
         })->toArray();
     }
