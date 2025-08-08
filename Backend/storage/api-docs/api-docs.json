@@ -1,0 +1,466 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Tasks",
+        "description": "Documentación de la API para el módulo de tareas",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Lista todas las tareas",
+                "description": "Obtiene una lista completa de todas las tareas disponibles",
+                "operationId": "c705fb49e0738dd65b6588c8d34c41d5",
+                "responses": {
+                    "200": {
+                        "description": "Lista de tareas obtenida exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Task"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Crea una nueva tarea",
+                "description": "Crea una nueva tarea con los datos proporcionados",
+                "operationId": "b5cb7bb3e58c942ac74ef8a236f561d2",
+                "requestBody": {
+                    "description": "Datos para crear una nueva tarea",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Título de la tarea",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Completar documentación"
+                                    },
+                                    "description": {
+                                        "description": "Descripción detallada de la tarea",
+                                        "type": "string",
+                                        "example": "Completar la documentación de la API REST"
+                                    },
+                                    "status": {
+                                        "description": "Estado de la tarea",
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "completed",
+                                            "in_progress"
+                                        ],
+                                        "example": "pending"
+                                    },
+                                    "color": {
+                                        "description": "Color de la tarea (código hexadecimal)",
+                                        "type": "string",
+                                        "example": "#FF5733"
+                                    },
+                                    "priority": {
+                                        "description": "Prioridad de la tarea (1-5)",
+                                        "type": "integer",
+                                        "maximum": 5,
+                                        "minimum": 1,
+                                        "example": 3
+                                    },
+                                    "due_date": {
+                                        "description": "Fecha de vencimiento",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-08-15T10:30:00Z"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tarea creada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The title field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tasks/{id}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Muestra una tarea específica",
+                "description": "Obtiene los detalles de una tarea específica por su ID",
+                "operationId": "a50f524db6e7e091797fdeaa1f9a22c6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID único de la tarea",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tarea encontrada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tarea no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Task with ID 1 not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Actualiza una tarea específica",
+                "description": "Actualiza los datos de una tarea existente",
+                "operationId": "fe6a9d0a97592f85901bff031fae1786",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID único de la tarea a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Datos actualizados para la tarea",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Título actualizado de la tarea",
+                                        "type": "string",
+                                        "maxLength": 255,
+                                        "example": "Documentación actualizada"
+                                    },
+                                    "description": {
+                                        "description": "Descripción actualizada de la tarea",
+                                        "type": "string",
+                                        "example": "Actualizar la documentación de la API"
+                                    },
+                                    "status": {
+                                        "description": "Estado actualizado de la tarea",
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "completed",
+                                            "in_progress"
+                                        ],
+                                        "example": "in_progress"
+                                    },
+                                    "color": {
+                                        "description": "Color actualizado de la tarea",
+                                        "type": "string",
+                                        "example": "#00FF00"
+                                    },
+                                    "priority": {
+                                        "description": "Prioridad actualizada de la tarea",
+                                        "type": "integer",
+                                        "maximum": 5,
+                                        "minimum": 1,
+                                        "example": 4
+                                    },
+                                    "due_date": {
+                                        "description": "Fecha de vencimiento actualizada",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-08-20T15:30:00Z"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tarea actualizada exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tarea no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Task with ID 1 not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The title field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Elimina una tarea específica",
+                "description": "Elimina permanentemente una tarea del sistema",
+                "operationId": "18b3109453044cd01bf95e80520a1523",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID único de la tarea a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Tarea eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Tarea no encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Task with ID 1 not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tasks/count": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Cuenta el total de tareas",
+                "description": "Obtiene el número total de tareas en el sistema",
+                "operationId": "b6a45c52a4afd9b172af87fc7f4f75e9",
+                "responses": {
+                    "200": {
+                        "description": "Conteo obtenido exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "count": {
+                                            "description": "Número total de tareas",
+                                            "type": "integer",
+                                            "example": 25
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Task": {
+                "title": "Task",
+                "description": "Entidad de tarea",
+                "required": [
+                    "id",
+                    "title",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID único de la tarea",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "description": "Título de la tarea",
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Completar documentación"
+                    },
+                    "description": {
+                        "description": "Descripción detallada de la tarea",
+                        "type": "string",
+                        "example": "Completar la documentación de la API REST"
+                    },
+                    "status": {
+                        "description": "Estado actual de la tarea",
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "completed",
+                            "in_progress"
+                        ],
+                        "example": "pending"
+                    },
+                    "color": {
+                        "description": "Color asignado a la tarea (código hexadecimal)",
+                        "type": "string",
+                        "example": "#FF5733",
+                        "nullable": true
+                    },
+                    "priority": {
+                        "description": "Prioridad de la tarea (1=baja, 5=alta)",
+                        "type": "integer",
+                        "maximum": 5,
+                        "minimum": 1,
+                        "example": 3
+                    },
+                    "due_date": {
+                        "description": "Fecha de vencimiento de la tarea",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-15T10:30:00Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Tasks",
+            "description": "Tasks"
+        }
+    ]
+}
