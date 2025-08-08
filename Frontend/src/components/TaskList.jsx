@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import taskService from "../services/api/taskService";
 import TaskModal from "./TaskModal";
+import pusher from "@/services/api/pusher";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -18,12 +19,77 @@ const TaskList = () => {
     loadTasks();
   }, []);
 
+  useEffect(() => {
+    // Verificar si ya existe una suscripción al canal
+    let channel = pusher.channels.channels["tasks"];
+    if (!channel) {
+      channel = pusher.subscribe("tasks");
+    }
+
+    // Handlers para eventos de conexión
+    const handleConnected = () => {
+      console.log("✅ Pusher conectado");
+    };
+
+    const handleDisconnected = () => {
+      console.log("❌ Pusher desconectado");
+    };
+
+    const handleError = (error) => {
+      console.error("❌ Error de conexión Pusher:", error);
+    };
+
+    const handleSubscriptionSucceeded = () => {
+      // Log silencioso - solo para debug si es necesario
+    };
+
+    const handleSubscriptionError = (error) => {
+      console.error("❌ Error al suscribirse al canal:", error);
+    };
+
+    const handleTaskCreated = (data) => {
+      console.log("🎉 Nueva tarea recibida en tiempo real");
+      setTasks((prevTasks) => {
+        const newTask = data.task || data;
+        // Verificar si la tarea ya existe para evitar duplicados
+        const taskExists = prevTasks.some((task) => task.id === newTask.id);
+        if (!taskExists) {
+          return [...prevTasks, newTask];
+        }
+        return prevTasks;
+      });
+    };
+
+    // Configurar los listeners
+    pusher.connection.bind("connected", handleConnected);
+    pusher.connection.bind("disconnected", handleDisconnected);
+    pusher.connection.bind("error", handleError);
+    channel.bind("pusher:subscription_succeeded", handleSubscriptionSucceeded);
+    channel.bind("pusher:subscription_error", handleSubscriptionError);
+    channel.bind("TaskCreated", handleTaskCreated);
+
+    // Cleanup function
+    return () => {
+      pusher.connection.unbind("connected", handleConnected);
+      pusher.connection.unbind("disconnected", handleDisconnected);
+      pusher.connection.unbind("error", handleError);
+
+      if (channel) {
+        channel.unbind(
+          "pusher:subscription_succeeded",
+          handleSubscriptionSucceeded
+        );
+        channel.unbind("pusher:subscription_error", handleSubscriptionError);
+        channel.unbind("TaskCreated", handleTaskCreated);
+      }
+    };
+  }, []);
+
   const loadTasks = async () => {
     try {
       setLoading(true);
-      setError(null);
       const data = await taskService.getAllTasks();
-      setTasks(Array.isArray(data) ? data : []);
+      setTasks(data);
     } catch (err) {
       setError("Error al cargar las tareas: " + err.message);
       console.error("Error loading tasks:", err);
@@ -66,11 +132,15 @@ const TaskList = () => {
     try {
       if (modalMode === "create") {
         await taskService.createTask(formData);
+        console.log("✅ Tarea creada exitosamente");
       } else {
         await taskService.updateTask(selectedTask.id, formData);
+        console.log("✅ Tarea actualizada exitosamente");
       }
+
       await loadTasks();
     } catch (err) {
+      console.error("❌ Error al guardar la tarea:", err);
       setError("Error al guardar la tarea: " + err.message);
       throw err;
     }
@@ -152,7 +222,22 @@ const TaskList = () => {
     if (!dateInput) return "-";
 
     try {
-      const date = new Date(dateInput); // convierte el string en Date
+      let dateString;
+
+      // Si es un objeto con formato PHP
+      if (typeof dateInput === "object" && dateInput.date) {
+        dateString = dateInput.date;
+      }
+      // Si es un string normal
+      else if (typeof dateInput === "string") {
+        dateString = dateInput;
+      }
+      // Si es otro tipo de objeto, intentar convertir a string
+      else {
+        dateString = String(dateInput);
+      }
+
+      const date = new Date(dateString);
       if (isNaN(date)) throw new Error("Fecha inválida");
 
       return new Intl.DateTimeFormat("es-ES", {

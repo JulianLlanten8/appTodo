@@ -69,7 +69,7 @@ const TaskForm = ({ task = null, onSave, onCancel, mode = "create" }) => {
     try {
       await onSave(formData);
     } catch (error) {
-      console.error("Error al guardar la tarea:", error);
+      console.error("❌ Error al guardar la tarea:", error);
     } finally {
       setIsSubmitting(false);
     }

@@ -3,15 +3,10 @@
 namespace Modules\InterfaceAdapters\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Application\Task\UseCases\CountTasksUseCase;
-use Modules\Application\Task\UseCases\CreateTaskUseCase;
-use Modules\Application\Task\UseCases\DeleteTaskUseCase;
-use Modules\Application\Task\UseCases\FindTaskByIdUseCase;
-use Modules\Application\Task\UseCases\GetAllTasksUseCase;
-use Modules\Application\Task\UseCases\UpdateTaskUseCase;
-use Modules\InterfaceAdapters\Requests\DeleteTaskRequest;
-use Modules\InterfaceAdapters\Requests\StoreTaskRequest;
-use Modules\InterfaceAdapters\Requests\UpdateTaskRequest;
+use Modules\Application\Task\UseCases\{CountTasksUseCase, CreateTaskUseCase, DeleteTaskUseCase, FindTaskByIdUseCase, GetAllTasksUseCase, UpdateTaskUseCase};
+use Modules\InterfaceAdapters\Requests\{DeleteTaskRequest, StoreTaskRequest, UpdateTaskRequest};
+use Modules\InterfaceAdapters\Events\TaskCreated;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -132,7 +127,9 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): JsonResponse
     {
         $task = $this->createTaskUseCase->execute($request->validated());
-
+        // Dispatch the event
+        Log::info('Disparando evento TaskCreated para tarea:', ['task_id' => $task->id]);
+        event(new TaskCreated($task));
         return response()->json($task, 201);
     }
 
@@ -330,7 +327,7 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, $id): JsonResponse
     {
         $task = $this->updateTaskUseCase->execute($id, $request->validated());
-
+        event(new TaskCreated($task));
         return response()->json($task);
     }
 }
