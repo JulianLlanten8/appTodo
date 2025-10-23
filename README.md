@@ -12,7 +12,7 @@ appTodo/
 
 ## Hexagonal Architecture
 
-![Hexagonal Architecture](Backend/Docs/Hexagonal-Architecture.svg)
+![Hexagonal Architecture](Backend/Docs/hexagonal-architecture.svg)
 
 ## Request Flow Architecture
 
